@@ -16,7 +16,8 @@
       "Bash(vercel:*)",
       "Bash(git push:*)",
       "Bash(git branch:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(__NEW_LINE__ echo \"Fixed dashboard searchParams\")"
     ],
     "deny": [],
     "ask": []
