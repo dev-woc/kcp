@@ -12,7 +12,8 @@
       "Bash(npm uninstall:*)",
       "Bash(npm run build:*)",
       "Bash(node:*)",
-      "Bash(npm --version)"
+      "Bash(npm --version)",
+      "Bash(vercel:*)"
     ],
     "deny": [],
     "ask": []
