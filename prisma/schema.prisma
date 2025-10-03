@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  password      String
+  name          String
+  phone         String
+  role          String        @default("user") // "user" or "admin"
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  applications  Application[]
+}
+
+model Application {
+  id                        String   @id @default(cuid())
+  userId                    String
+  user                      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Form fields
+  fullName                  String
+  email                     String
+  phone                     String
+  dateOfBirth               String
+  cityState                 String
+  therapyExperience         String   // "Yes" or "No"
+  hasInsurance              String   // "Yes" or "No"
+  currentChallenges         String[] // Array of selected challenges
+  testimonialWillingness    String   // "Yes" or "No"
+  mentalHealthDescription   String   @db.Text
+  therapyReason             String   @db.Text
+  therapyGoals              String   @db.Text
+  weeklyAvailability        String   // "Yes" or "No"
+  hasDevice                 String   // "Yes" or "No"
+  therapyBarriers           String   @db.Text
+  introVideoUrl             String?  // URL to the uploaded intro video
+
+  // Application metadata
+  status                    String   @default("pending") // "pending", "reviewing", "approved", "rejected"
+  submittedAt               DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
