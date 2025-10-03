@@ -43,6 +43,23 @@ export default function ApplicationDetailPage() {
   const [application, setApplication] = useState<ApplicationDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {    // Handle async params
+    Promise.resolve(params).then((p) => {
+      setAppId(typeof p.id === 'string' ? p.id : p.id);
+    });
+  }, [params]);
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.role !== "admin") {
+      router.push("/dashboard");
+    }
+  }, [status, session, router]);
+
+  useEffect(() => {
+    if (appId) {
+      fetchApplication();
+    }
+  }, [appId]);
 
   const fetchApplication = async () => {
     try {

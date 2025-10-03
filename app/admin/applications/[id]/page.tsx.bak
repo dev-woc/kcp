@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface ApplicationDetail {
@@ -35,14 +35,31 @@ interface ApplicationDetail {
   };
 }
 
-export default function ApplicationDetailPage() {
+export default function ApplicationDetailPage({ params }: { params: { id: string } }) {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const params = useParams();
-  const appId = params.id as string;
   const [application, setApplication] = useState<ApplicationDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [appId, setAppId] = useState<string>("");
 
+  useEffect(() => {
+    // Handle async params
+    Promise.resolve(params).then((p) => {
+      setAppId(typeof p.id === 'string' ? p.id : p.id);
+    });
+  }, [params]);
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.role !== "admin") {
+      router.push("/dashboard");
+    }
+  }, [status, session, router]);
+
+  useEffect(() => {
+    if (appId) {
+      fetchApplication();
+    }
+  }, [appId]);
 
   const fetchApplication = async () => {
     try {
