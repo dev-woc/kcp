@@ -18,7 +18,8 @@
       "Bash(git branch:*)",
       "Bash(cat:*)",
       "Bash(__NEW_LINE__ echo \"Fixed dashboard searchParams\")",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(xargs rm:*)"
     ],
     "deny": [],
     "ask": []
