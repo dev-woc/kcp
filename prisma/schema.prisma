@@ -48,6 +48,11 @@ model Application {
   therapyBarriers           String   @db.Text
   introVideoUrl             String?  // URL to the uploaded intro video
 
+  // Therapist preference
+  therapistPreference       String   // "choose_own" or "foundation_help"
+  preferredTherapistName    String?  // Optional: if choosing own therapist
+  preferredTherapistContact String?  // Optional: contact info for preferred therapist
+
   // Application metadata
   status                    String   @default("pending") // "pending", "reviewing", "approved", "rejected"
   submittedAt               DateTime @default(now())

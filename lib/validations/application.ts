@@ -17,6 +17,9 @@ export const applicationSchema = z.object({
   hasDevice: z.enum(["Yes", "No"]),
   therapyBarriers: z.string().min(10, "Please describe any barriers"),
   introVideoUrl: z.string().url("Please upload an intro video").optional().or(z.literal("")),
+  therapistPreference: z.enum(["choose_own", "foundation_help"]),
+  preferredTherapistName: z.string().optional().or(z.literal("")),
+  preferredTherapistContact: z.string().optional().or(z.literal("")),
 });
 
 export type ApplicationFormData = z.infer<typeof applicationSchema>;

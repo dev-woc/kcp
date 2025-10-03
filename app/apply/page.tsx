@@ -422,6 +422,79 @@ export default function ApplyPage() {
             </div>
           </div>
 
+          {/* Therapist Preference */}
+          <div className="space-y-4 pt-6 border-t">
+            <h2 className="text-xl font-semibold text-gray-900">Therapist Preference</h2>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                How would you like to select your therapist? *
+              </label>
+              <div className="space-y-2">
+                <label className="flex items-start">
+                  <input
+                    type="radio"
+                    {...register("therapistPreference")}
+                    value="foundation_help"
+                    className="form-radio mt-1"
+                  />
+                  <span className="ml-2">
+                    <strong>Help me find a therapist</strong>
+                    <br />
+                    <span className="text-sm text-gray-600">
+                      The Keep Pedaling Foundation will match you with a therapist from our network
+                    </span>
+                  </span>
+                </label>
+                <label className="flex items-start">
+                  <input
+                    type="radio"
+                    {...register("therapistPreference")}
+                    value="choose_own"
+                    className="form-radio mt-1"
+                  />
+                  <span className="ml-2">
+                    <strong>I have a preferred therapist</strong>
+                    <br />
+                    <span className="text-sm text-gray-600">
+                      I'd like to work with a specific therapist
+                    </span>
+                  </span>
+                </label>
+              </div>
+              {errors.therapistPreference && (
+                <p className="mt-1 text-sm text-red-600">{errors.therapistPreference.message}</p>
+              )}
+            </div>
+
+            {watch("therapistPreference") === "choose_own" && (
+              <div className="space-y-4 ml-6 p-4 bg-blue-50 rounded-md">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Preferred Therapist Name
+                  </label>
+                  <input
+                    type="text"
+                    {...register("preferredTherapistName")}
+                    placeholder="Dr. Jane Smith"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Therapist Contact Information
+                  </label>
+                  <input
+                    type="text"
+                    {...register("preferredTherapistContact")}
+                    placeholder="Email, phone, or practice name"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Video Upload */}
           <div className="space-y-4 pt-6 border-t">
             <h2 className="text-xl font-semibold text-gray-900">Introduction Video</h2>

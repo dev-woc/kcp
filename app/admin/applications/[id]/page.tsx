@@ -23,6 +23,9 @@ interface ApplicationDetail {
   hasDevice: string;
   therapyBarriers: string;
   introVideoUrl?: string;
+  therapistPreference: string;
+  preferredTherapistName?: string;
+  preferredTherapistContact?: string;
   status: string;
   submittedAt: string;
   user: {
@@ -294,6 +297,47 @@ export default function ApplicationDetailPage({ params }: { params: { id: string
                   </label>
                   <p className="mt-1 text-gray-900">{application.testimonialWillingness}</p>
                 </div>
+              </div>
+            </section>
+
+            {/* Therapist Preference */}
+            <section>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-2">
+                Therapist Preference
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Preference</label>
+                  <p className="mt-1 text-gray-900">
+                    {application.therapistPreference === "foundation_help"
+                      ? "Help finding a therapist from the foundation network"
+                      : "Has a preferred therapist"}
+                  </p>
+                </div>
+                {application.therapistPreference === "choose_own" && (
+                  <>
+                    {application.preferredTherapistName && (
+                      <div>
+                        <label className="text-sm font-medium text-gray-700">
+                          Preferred Therapist Name
+                        </label>
+                        <p className="mt-1 text-gray-900 bg-gray-50 p-4 rounded">
+                          {application.preferredTherapistName}
+                        </p>
+                      </div>
+                    )}
+                    {application.preferredTherapistContact && (
+                      <div>
+                        <label className="text-sm font-medium text-gray-700">
+                          Therapist Contact Info
+                        </label>
+                        <p className="mt-1 text-gray-900 bg-gray-50 p-4 rounded">
+                          {application.preferredTherapistContact}
+                        </p>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </section>
 
