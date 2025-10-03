@@ -40,6 +40,14 @@ export default function ApplicationDetailPage({ params }: { params: { id: string
   const router = useRouter();
   const [application, setApplication] = useState<ApplicationDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [appId, setAppId] = useState<string>("");
+
+  useEffect(() => {
+    // Handle async params
+    Promise.resolve(params).then((p) => {
+      setAppId(typeof p.id === 'string' ? p.id : p.id);
+    });
+  }, [params]);
 
   useEffect(() => {
     if (status === "authenticated" && session?.user?.role !== "admin") {
@@ -48,12 +56,14 @@ export default function ApplicationDetailPage({ params }: { params: { id: string
   }, [status, session, router]);
 
   useEffect(() => {
-    fetchApplication();
-  }, []);
+    if (appId) {
+      fetchApplication();
+    }
+  }, [appId]);
 
   const fetchApplication = async () => {
     try {
-      const response = await fetch(`/api/admin/applications/${params.id}`);
+      const response = await fetch(`/api/admin/applications/${appId}`);
       const data = await response.json();
       setApplication(data.application);
     } catch (error) {
@@ -65,7 +75,7 @@ export default function ApplicationDetailPage({ params }: { params: { id: string
 
   const updateStatus = async (newStatus: string) => {
     try {
-      const response = await fetch(`/api/admin/applications/${params.id}`, {
+      const response = await fetch(`/api/admin/applications/${appId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

@@ -13,7 +13,9 @@
       "Bash(npm run build:*)",
       "Bash(node:*)",
       "Bash(npm --version)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "Bash(git push:*)",
+      "Bash(git branch:*)"
     ],
     "deny": [],
     "ask": []
