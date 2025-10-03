@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import SessionCheckIn from "@/components/session-checkin";
 
 export default async function DashboardPage({
   searchParams,
@@ -155,6 +156,13 @@ export default async function DashboardPage({
             </div>
           )}
         </div>
+
+        {/* Session Check-In (only shown for approved applications) */}
+        {application && application.status === "approved" && (
+          <div className="mt-8">
+            <SessionCheckIn applicationStatus={application.status} />
+          </div>
+        )}
       </main>
     </div>
   );

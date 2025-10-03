@@ -93,6 +93,12 @@ export default function AdminPage() {
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-blue-600">Admin Portal</h1>
             <div className="flex items-center space-x-4">
+              <Link href="/admin" className="text-blue-600 font-semibold">
+                Applications
+              </Link>
+              <Link href="/admin/sessions" className="text-gray-600 hover:text-gray-900">
+                Sessions
+              </Link>
               <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
                 Dashboard
               </Link>
