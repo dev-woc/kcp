@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-// PATCH - Update session (verify, add notes, etc.)
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
+    const { id } = await params;
 
     if (!session?.user || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -19,7 +18,7 @@ export async function PATCH(
     const { verified, adminNotes, therapistName } = body;
 
     const updatedSession = await prisma.session.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         verified: verified !== undefined ? verified : undefined,
         adminNotes: adminNotes !== undefined ? adminNotes : undefined,
@@ -37,20 +36,20 @@ export async function PATCH(
   }
 }
 
-// DELETE - Delete a session
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
+    const { id } = await params;
 
     if (!session?.user || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await prisma.session.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });
