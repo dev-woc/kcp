@@ -99,9 +99,6 @@ export default function AdminPage() {
               <Link href="/admin/sessions" className="text-gray-600 hover:text-gray-900">
                 Sessions
               </Link>
-              <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
-                Dashboard
-              </Link>
               <span className="text-gray-700">{session.user.name}</span>
               <Link href="/api/auth/signout" className="text-gray-600 hover:text-gray-900">
                 Sign Out

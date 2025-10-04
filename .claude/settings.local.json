@@ -19,7 +19,8 @@
       "Bash(cat:*)",
       "Bash(__NEW_LINE__ echo \"Fixed dashboard searchParams\")",
       "Bash(find:*)",
-      "Bash(xargs rm:*)"
+      "Bash(xargs rm:*)",
+      "Bash(npx tsx:*)"
     ],
     "deny": [],
     "ask": []

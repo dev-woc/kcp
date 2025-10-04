@@ -15,6 +15,11 @@ export default async function DashboardPage({
     redirect("/login");
   }
 
+  // Redirect admins to admin portal
+  if (session.user.role === "admin") {
+    redirect("/admin");
+  }
+
   const application = await prisma.application.findFirst({
     where: { userId: session.user.id },
   });

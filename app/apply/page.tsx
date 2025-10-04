@@ -49,6 +49,26 @@ export default function ApplyPage() {
     return null;
   }
 
+  // Prevent admins from submitting applications
+  if (session.user?.role === "admin") {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow p-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Admin Access</h2>
+          <p className="text-gray-600 mb-6">
+            Admins cannot submit applications. Please use the admin portal to review and manage applications.
+          </p>
+          <button
+            onClick={() => router.push("/admin")}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+          >
+            Go to Admin Portal
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const onSubmit = async (data: ApplicationFormData) => {
     setError("");
     setLoading(true);
