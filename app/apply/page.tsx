@@ -171,7 +171,7 @@ export default function ApplyPage() {
               <input
                 type="text"
                 {...register("fullName")}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.fullName && (
                 <p className="mt-1 text-sm text-red-600">{errors.fullName.message}</p>
@@ -183,7 +183,7 @@ export default function ApplyPage() {
               <input
                 type="email"
                 {...register("email")}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
@@ -195,7 +195,7 @@ export default function ApplyPage() {
               <input
                 type="tel"
                 {...register("phone")}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.phone && (
                 <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
@@ -207,7 +207,7 @@ export default function ApplyPage() {
               <input
                 type="date"
                 {...register("dateOfBirth")}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.dateOfBirth && (
                 <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth.message}</p>
@@ -220,7 +220,7 @@ export default function ApplyPage() {
                 type="text"
                 {...register("cityState")}
                 placeholder="e.g., Los Angeles, CA"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.cityState && (
                 <p className="mt-1 text-sm text-red-600">{errors.cityState.message}</p>
@@ -324,7 +324,7 @@ export default function ApplyPage() {
               <textarea
                 {...register("mentalHealthDescription")}
                 rows={4}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.mentalHealthDescription && (
                 <p className="mt-1 text-sm text-red-600">{errors.mentalHealthDescription.message}</p>
@@ -338,7 +338,7 @@ export default function ApplyPage() {
               <textarea
                 {...register("therapyReason")}
                 rows={4}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.therapyReason && (
                 <p className="mt-1 text-sm text-red-600">{errors.therapyReason.message}</p>
@@ -352,7 +352,7 @@ export default function ApplyPage() {
               <textarea
                 {...register("therapyGoals")}
                 rows={4}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.therapyGoals && (
                 <p className="mt-1 text-sm text-red-600">{errors.therapyGoals.message}</p>
@@ -366,7 +366,7 @@ export default function ApplyPage() {
               <textarea
                 {...register("therapyBarriers")}
                 rows={4}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
               />
               {errors.therapyBarriers && (
                 <p className="mt-1 text-sm text-red-600">{errors.therapyBarriers.message}</p>
@@ -521,7 +521,7 @@ export default function ApplyPage() {
                     type="text"
                     {...register("preferredTherapistName")}
                     placeholder="Dr. Jane Smith"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
                   />
                 </div>
                 <div>
@@ -532,7 +532,7 @@ export default function ApplyPage() {
                     type="text"
                     {...register("preferredTherapistContact")}
                     placeholder="Email, phone, or practice name"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
                   />
                 </div>
               </div>
