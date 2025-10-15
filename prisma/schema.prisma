@@ -9,12 +9,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
   email         String        @unique
   password      String
   name          String
@@ -27,8 +27,8 @@ model User {
 }
 
 model Application {
-  id                        String   @id @default(cuid())
-  userId                    String
+  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId                    String   @db.ObjectId
   user                      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Form fields
@@ -41,12 +41,12 @@ model Application {
   hasInsurance              String   // "Yes" or "No"
   currentChallenges         String[] // Array of selected challenges
   testimonialWillingness    String   // "Yes" or "No"
-  mentalHealthDescription   String   @db.Text
-  therapyReason             String   @db.Text
-  therapyGoals              String   @db.Text
+  mentalHealthDescription   String
+  therapyReason             String
+  therapyGoals              String
   weeklyAvailability        String   // "Yes" or "No"
   hasDevice                 String   // "Yes" or "No"
-  therapyBarriers           String   @db.Text
+  therapyBarriers           String
   introVideoUrl             String?  // URL to the uploaded intro video
 
   // Therapist preference
@@ -64,18 +64,18 @@ model Application {
 }
 
 model Session {
-  id              String   @id @default(cuid())
-  userId          String
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String   @db.ObjectId
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Session details
   checkInTime     DateTime @default(now())
   sessionNumber   Int      // Which session number (1, 2, 3, 4 for the month)
-  notes           String?  @db.Text // Optional notes from user
+  notes           String?  // Optional notes from user
 
   // Admin tracking
   therapistName   String?  // Name of therapist for this session
-  adminNotes      String?  @db.Text // Admin notes about the session
+  adminNotes      String?  // Admin notes about the session
   verified        Boolean  @default(false) // Admin can verify the session occurred
 
   createdAt       DateTime @default(now())
