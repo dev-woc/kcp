@@ -40,7 +40,7 @@ export default function SignupPage() {
         },
         body: JSON.stringify({
           name: formData.name,
-          email: formData.email,
+          email: formData.email.toLowerCase(),
           phone: formData.phone,
           password: formData.password,
         }),
