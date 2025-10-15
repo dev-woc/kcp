@@ -34,12 +34,6 @@ export default function Nav() {
             {session?.user ? (
               <>
                 <Link
-                  href="/find-markets"
-                  className={pathname === "/find-markets" ? "text-blue-600 hover:text-blue-700 font-semibold" : "text-gray-600 hover:text-gray-900"}
-                >
-                  Find Markets
-                </Link>
-                <Link
                   href="/dashboard"
                   className={isDashboardPath ? "text-blue-600 hover:text-blue-700 font-semibold" : "text-gray-600 hover:text-gray-900"}
                 >
@@ -63,12 +57,6 @@ export default function Nav() {
               </>
             ) : (
               <>
-                <Link
-                  href="/find-markets"
-                  className={pathname === "/find-markets" ? "text-blue-600 hover:text-blue-700 font-semibold" : "text-gray-600 hover:text-gray-900"}
-                >
-                  Find Markets
-                </Link>
                 <Link href="/login" className="text-gray-600 hover:text-gray-900">
                   Login
                 </Link>
