@@ -98,7 +98,7 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
         {nextSession && !showCheckInForm && (
           <button
             onClick={() => setShowCheckInForm(true)}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
+            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-semibold"
           >
             Check In - Session {nextSession}
           </button>
@@ -107,7 +107,7 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
 
       {/* Check-in Form */}
       {showCheckInForm && (
-        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Check In for Session {nextSession}
           </h3>
@@ -127,7 +127,7 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
                 onChange={(e) =>
                   setFormData({ ...formData, sessionNumber: Number(e.target.value) })
                 }
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
               >
                 {[1, 2, 3, 4].map((num) => (
                   <option
@@ -152,7 +152,7 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
                   setFormData({ ...formData, therapistName: e.target.value })
                 }
                 placeholder="Dr. Jane Smith"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
               />
             </div>
 
@@ -165,7 +165,7 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 rows={3}
                 placeholder="How did this session go? Any notes you'd like to share..."
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
               />
             </div>
 
@@ -173,7 +173,7 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
               <button
                 type="submit"
                 disabled={checkingIn}
-                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+                className="flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 disabled:bg-gray-400"
               >
                 {checkingIn ? "Checking In..." : "Check In"}
               </button>

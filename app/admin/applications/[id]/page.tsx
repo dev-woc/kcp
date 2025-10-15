@@ -90,18 +90,18 @@ export default function ApplicationDetailPage() {
 
   const statusColors = {
     pending: "bg-yellow-100 text-yellow-800",
-    reviewing: "bg-blue-100 text-blue-800",
+    reviewing: "bg-green-100 text-green-800",
     approved: "bg-green-100 text-green-800",
     rejected: "bg-red-100 text-red-800",
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       <Nav />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-6">
-          <Link href="/admin" className="text-blue-600 hover:text-blue-700">
+          <Link href="/admin" className="text-green-600 hover:text-green-700">
             ← Back to Applications
           </Link>
         </div>
@@ -133,7 +133,7 @@ export default function ApplicationDetailPage() {
               </button>
               <button
                 onClick={() => updateStatus("reviewing")}
-                className="px-4 py-2 bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200"
+                className="px-4 py-2 bg-green-100 text-green-800 rounded-md hover:bg-green-200"
               >
                 Reviewing
               </button>
@@ -218,7 +218,7 @@ export default function ApplicationDetailPage() {
                     {application.currentChallenges.map((challenge) => (
                       <span
                         key={challenge}
-                        className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm"
+                        className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm"
                       >
                         {challenge}
                       </span>
@@ -341,7 +341,7 @@ export default function ApplicationDetailPage() {
                   href={application.introVideoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                 >
                   View Introduction Video
                 </a>
@@ -364,7 +364,7 @@ export default function ApplicationDetailPage() {
                 </button>
                 <button
                   onClick={() => updateStatus("reviewing")}
-                  className="px-4 py-2 bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200"
+                  className="px-4 py-2 bg-green-100 text-green-800 rounded-md hover:bg-green-200"
                 >
                   Reviewing
                 </button>

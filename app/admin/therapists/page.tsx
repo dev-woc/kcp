@@ -154,7 +154,7 @@ export default function TherapistsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       <Nav />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -166,7 +166,7 @@ export default function TherapistsPage() {
             <Link href="/admin/sessions" className="text-gray-600 hover:text-gray-900">
               Sessions
             </Link>
-            <Link href="/admin/therapists" className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1">
+            <Link href="/admin/therapists" className="text-green-600 font-semibold border-b-2 border-green-600 pb-1">
               Therapists
             </Link>
           </div>
@@ -188,7 +188,7 @@ export default function TherapistsPage() {
                   bio: "",
                 });
               }}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
             >
               {showForm ? "Cancel" : "+ Add Therapist"}
             </button>
@@ -295,7 +295,7 @@ export default function TherapistsPage() {
               <div className="flex space-x-2">
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+                  className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700"
                 >
                   {editingTherapist ? "Update" : "Add"} Therapist
                 </button>
@@ -373,7 +373,7 @@ export default function TherapistsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                       <button
                         onClick={() => handleEdit(therapist)}
-                        className="text-blue-600 hover:text-blue-900"
+                        className="text-green-600 hover:text-green-900"
                       >
                         Edit
                       </button>

@@ -88,7 +88,7 @@ export default function ApplyPage() {
   // Prevent admins from submitting applications
   if (session.user?.role === "admin") {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center px-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow p-8 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Admin Access</h2>
           <p className="text-gray-600 mb-6">
@@ -96,7 +96,7 @@ export default function ApplyPage() {
           </p>
           <button
             onClick={() => router.push("/admin")}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
           >
             Go to Admin Portal
           </button>
@@ -153,7 +153,7 @@ export default function ApplyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Application Form</h1>
@@ -183,7 +183,7 @@ export default function ApplyPage() {
               <input
                 type="text"
                 {...register("fullName")}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.fullName && (
                 <p className="mt-1 text-sm text-red-600">{errors.fullName.message}</p>
@@ -195,7 +195,7 @@ export default function ApplyPage() {
               <input
                 type="email"
                 {...register("email")}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
@@ -207,7 +207,7 @@ export default function ApplyPage() {
               <input
                 type="tel"
                 {...register("phone")}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.phone && (
                 <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
@@ -219,7 +219,7 @@ export default function ApplyPage() {
               <input
                 type="date"
                 {...register("dateOfBirth")}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.dateOfBirth && (
                 <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth.message}</p>
@@ -232,7 +232,7 @@ export default function ApplyPage() {
                 type="text"
                 {...register("cityState")}
                 placeholder="e.g., Los Angeles, CA"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.cityState && (
                 <p className="mt-1 text-sm text-red-600">{errors.cityState.message}</p>
@@ -336,7 +336,7 @@ export default function ApplyPage() {
               <textarea
                 {...register("mentalHealthDescription")}
                 rows={4}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.mentalHealthDescription && (
                 <p className="mt-1 text-sm text-red-600">{errors.mentalHealthDescription.message}</p>
@@ -350,7 +350,7 @@ export default function ApplyPage() {
               <textarea
                 {...register("therapyReason")}
                 rows={4}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.therapyReason && (
                 <p className="mt-1 text-sm text-red-600">{errors.therapyReason.message}</p>
@@ -364,7 +364,7 @@ export default function ApplyPage() {
               <textarea
                 {...register("therapyGoals")}
                 rows={4}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.therapyGoals && (
                 <p className="mt-1 text-sm text-red-600">{errors.therapyGoals.message}</p>
@@ -378,7 +378,7 @@ export default function ApplyPage() {
               <textarea
                 {...register("therapyBarriers")}
                 rows={4}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
               />
               {errors.therapyBarriers && (
                 <p className="mt-1 text-sm text-red-600">{errors.therapyBarriers.message}</p>
@@ -524,7 +524,7 @@ export default function ApplyPage() {
             </div>
 
             {watch("therapistPreference") === "choose_own" && (
-              <div className="space-y-4 ml-6 p-4 bg-blue-50 rounded-md">
+              <div className="space-y-4 ml-6 p-4 bg-green-50 rounded-md">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Preferred Therapist Name
@@ -533,7 +533,7 @@ export default function ApplyPage() {
                     type="text"
                     {...register("preferredTherapistName")}
                     placeholder="Dr. Jane Smith"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
                   />
                 </div>
                 <div>
@@ -544,7 +544,7 @@ export default function ApplyPage() {
                     type="text"
                     {...register("preferredTherapistContact")}
                     placeholder="Email, phone, or practice name"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-transparent text-black"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 bg-transparent text-black"
                   />
                 </div>
               </div>
@@ -571,13 +571,13 @@ export default function ApplyPage() {
                     setVideoFile(file);
                   }
                 }}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
               />
               {isUploading && (
                 <div className="mt-2">
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-blue-600 h-2 rounded-full transition-all"
+                      className="bg-green-600 h-2 rounded-full transition-all"
                       style={{ width: `${uploadProgress}%` }}
                     />
                   </div>
@@ -591,7 +591,7 @@ export default function ApplyPage() {
             <button
               type="submit"
               disabled={loading || isUploading}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400"
             >
               {loading || isUploading ? "Submitting..." : "Submit Application"}
             </button>

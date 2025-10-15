@@ -74,7 +74,7 @@ export default function VideoUpload({ applicationId, currentVideoUrl }: VideoUpl
               href={currentVideoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-700 underline inline-flex items-center"
+              className="text-green-600 hover:text-green-700 underline inline-flex items-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -113,7 +113,7 @@ export default function VideoUpload({ applicationId, currentVideoUrl }: VideoUpl
               }
             }}
             disabled={uploading || isUploading}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 disabled:opacity-50"
           />
           <p className="mt-1 text-xs text-gray-500">Maximum file size: 32MB</p>
         </div>
@@ -122,7 +122,7 @@ export default function VideoUpload({ applicationId, currentVideoUrl }: VideoUpl
           <div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all"
+                className="bg-green-600 h-2 rounded-full transition-all"
                 style={{ width: `${uploadProgress}%` }}
               />
             </div>
@@ -134,7 +134,7 @@ export default function VideoUpload({ applicationId, currentVideoUrl }: VideoUpl
           <div className="flex items-center space-x-2">
             <button
               onClick={handleUpload}
-              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+              className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700"
             >
               {currentVideoUrl ? "Replace Video" : "Upload Video"}
             </button>

@@ -23,13 +23,13 @@ export default async function DashboardPage({
 
   const statusColors = {
     pending: "bg-yellow-100 text-yellow-800",
-    reviewing: "bg-blue-100 text-blue-800",
+    reviewing: "bg-green-100 text-green-800",
     approved: "bg-green-100 text-green-800",
     rejected: "bg-red-100 text-red-800",
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       <Nav />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -52,7 +52,7 @@ export default async function DashboardPage({
               </p>
               <Link
                 href="/apply"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+                className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
               >
                 Start Application
               </Link>
@@ -104,7 +104,7 @@ export default async function DashboardPage({
                   {application.currentChallenges.map((challenge) => (
                     <span
                       key={challenge}
-                      className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm"
+                      className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm"
                     >
                       {challenge}
                     </span>
@@ -122,8 +122,8 @@ export default async function DashboardPage({
                 currentVideoUrl={application.introVideoUrl}
               />
 
-              <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mt-6">
-                <p className="text-sm text-blue-700">
+              <div className="bg-green-50 border-l-4 border-green-400 p-4 mt-6">
+                <p className="text-sm text-green-700">
                   {application.status === "pending" && "Your application is being reviewed. We'll notify you of any updates."}
                   {application.status === "reviewing" && "Your application is currently under review by our team."}
                   {application.status === "approved" && "Congratulations! Your application has been approved. We'll contact you soon with next steps."}

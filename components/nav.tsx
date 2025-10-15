@@ -45,7 +45,7 @@ export default function Nav() {
               height={40}
               className="rounded-full"
             />
-            <span className="text-2xl font-bold text-blue-600">Keep Pedaling Foundation</span>
+            <span className="text-2xl font-bold text-green-600">Keep Pedaling Foundation</span>
           </Link>
 
           {session?.user ? (
@@ -71,7 +71,7 @@ export default function Nav() {
                     href="/dashboard"
                     onClick={() => setIsDropdownOpen(false)}
                     className={`block px-4 py-2 text-sm hover:bg-gray-100 ${
-                      isDashboardPath ? "bg-blue-50 text-blue-600 font-semibold" : "text-gray-700"
+                      isDashboardPath ? "bg-green-50 text-green-600 font-semibold" : "text-gray-700"
                     }`}
                   >
                     Dashboard
@@ -81,7 +81,7 @@ export default function Nav() {
                       href="/admin"
                       onClick={() => setIsDropdownOpen(false)}
                       className={`block px-4 py-2 text-sm hover:bg-gray-100 ${
-                        isAdminPath ? "bg-blue-50 text-blue-600 font-semibold" : "text-gray-700"
+                        isAdminPath ? "bg-green-50 text-green-600 font-semibold" : "text-gray-700"
                       }`}
                     >
                       Admin Portal
@@ -104,7 +104,7 @@ export default function Nav() {
               </Link>
               <Link
                 href="/signup"
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
               >
                 Sign Up
               </Link>
