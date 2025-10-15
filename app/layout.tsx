@@ -13,9 +13,25 @@ const rajdhani = Rajdhani({
 export const metadata: Metadata = {
   title: "Keep Pedaling Foundation - Cycle of Support",
   description: "Free therapy program for individuals in need",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Keep Pedaling Foundation",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: "/logo.jpeg",
-    apple: "/logo.jpeg",
+    apple: "/icon-192x192.png",
+  },
+  themeColor: "#22c55e",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
   },
 };
 
