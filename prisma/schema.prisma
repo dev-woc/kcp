@@ -84,3 +84,18 @@ model Session {
   @@index([userId])
   @@index([checkInTime])
 }
+
+model Therapist {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String   @unique
+  phone           String
+  specialization  String   // Areas of expertise
+  licenseNumber   String?  // Optional license number
+  bio             String?  // Optional bio/description
+  isActive        Boolean  @default(true) // Enable/disable therapist
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([isActive])
+}

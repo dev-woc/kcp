@@ -128,6 +128,9 @@ export default function AdminSessionsPage() {
             <Link href="/admin/sessions" className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1">
               Sessions
             </Link>
+            <Link href="/admin/therapists" className="text-gray-600 hover:text-gray-900">
+              Therapists
+            </Link>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Session Check-Ins</h2>
           <p className="text-gray-600">Track and verify therapy session attendance</p>

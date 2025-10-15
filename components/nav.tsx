@@ -3,6 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Nav() {
   const { data: session } = useSession();
@@ -19,8 +20,15 @@ export default function Nav() {
     <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-blue-600">
-            Keep Pedaling Foundation
+          <Link href="/" className="flex items-center space-x-3">
+            <Image
+              src="/logo.jpeg"
+              alt="Keep Pedaling Foundation Logo"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <span className="text-2xl font-bold text-blue-600">Keep Pedaling Foundation</span>
           </Link>
           <div className="flex items-center space-x-4">
             {session?.user ? (
