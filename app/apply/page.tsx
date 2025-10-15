@@ -35,6 +35,9 @@ export default function ApplyPage() {
   } = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
+      fullName: session?.user?.name || "",
+      email: session?.user?.email || "",
+      phone: session?.user?.phone || "",
       currentChallenges: [],
     },
   });
