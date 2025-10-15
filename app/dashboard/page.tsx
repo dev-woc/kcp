@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import SessionCheckIn from "@/components/session-checkin";
+import Nav from "@/components/nav";
 
 export default async function DashboardPage({
   searchParams,
@@ -33,22 +34,7 @@ export default async function DashboardPage({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-blue-600">Keep Pedaling Foundation</h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700">Welcome, {session.user.name}</span>
-              <Link
-                href="/api/auth/signout"
-                className="text-gray-600 hover:text-gray-900"
-              >
-                Sign Out
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {params.submitted && (

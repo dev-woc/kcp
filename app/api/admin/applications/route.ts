@@ -7,8 +7,15 @@ export async function GET(request: Request) {
   try {
     const session = await getServerSession();
 
+    console.log("Admin API - Session:", session);
+    console.log("Admin API - User role:", session?.user?.role);
+
     if (!session?.user || session.user.role !== "admin") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      console.log("Admin API - Unauthorized access attempt");
+      return NextResponse.json({
+        error: "Unauthorized",
+        details: session?.user ? `User role: ${session.user.role}` : "No session"
+      }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);

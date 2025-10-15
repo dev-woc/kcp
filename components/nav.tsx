@@ -1,10 +1,14 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 
 export default function Nav() {
   const { data: session } = useSession();
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
 
   return (
     <nav className="bg-white shadow-sm">
@@ -25,12 +29,12 @@ export default function Nav() {
                   </Link>
                 )}
                 <span className="text-gray-700">Welcome, {session.user.name}</span>
-                <Link
-                  href="/api/auth/signout"
+                <button
+                  onClick={handleSignOut}
                   className="text-gray-600 hover:text-gray-900"
                 >
                   Sign Out
-                </Link>
+                </button>
               </>
             ) : (
               <>
