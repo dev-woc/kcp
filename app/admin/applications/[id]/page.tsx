@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import Nav from "@/components/nav";
 
 interface ApplicationDetail {
   id: string;
@@ -43,6 +44,11 @@ export default function ApplicationDetailPage() {
   const [application, setApplication] = useState<ApplicationDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.role === "admin") {
+      fetchApplication();
+    }
+  }, [status, session, appId]);
 
   const fetchApplication = async () => {
     try {
@@ -91,23 +97,14 @@ export default function ApplicationDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-blue-600">Admin Portal</h1>
-            <div className="flex items-center space-x-4">
-              <Link href="/admin" className="text-gray-600 hover:text-gray-900">
-                Back to Applications
-              </Link>
-              <Link href="/api/auth/signout" className="text-gray-600 hover:text-gray-900">
-                Sign Out
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-6">
+          <Link href="/admin" className="text-blue-600 hover:text-blue-700">
+            ← Back to Applications
+          </Link>
+        </div>
         <div className="bg-white rounded-lg shadow p-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-900">Application Details</h2>
