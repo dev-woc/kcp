@@ -30,7 +30,7 @@ export default function Nav() {
             />
             <span className="text-2xl font-bold text-blue-600">Keep Pedaling Foundation</span>
           </Link>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 sm:flex-col sm:items-center sm:space-y-2 sm:space-x-0">
             {session?.user ? (
               <>
                 <Link
