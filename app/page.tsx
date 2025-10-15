@@ -33,7 +33,7 @@ export default function Home() {
           </p>
           <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 max-w-2xl mx-auto mb-8">
             <p className="text-sm text-yellow-700">
-              <strong>Application Deadline:</strong> January 25th, 2025 at 11:59 PM
+              <strong>Application Deadline:</strong> November 16th, 2025 at 11:59 PM
             </p>
           </div>
 

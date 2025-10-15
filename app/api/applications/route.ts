@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     const validatedData = applicationSchema.parse(body);
 
     // Check deadline
-    const deadline = new Date("2025-01-25T23:59:59");
+    const deadline = new Date("2025-11-16T23:59:59");
     if (new Date() > deadline) {
       return NextResponse.json(
         { error: "Application deadline has passed" },
