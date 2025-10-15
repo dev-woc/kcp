@@ -16,9 +16,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Invalid credentials");
         }
 
-        const user = await prisma.user.findUnique({
+        const email = (credentials.email as string).toLowerCase();
+
+        const user = await prisma.user.findFirst({
           where: {
-            email: credentials.email as string,
+            email: {
+              equals: email,
+              mode: 'insensitive',
+            },
           },
         });
 
@@ -58,7 +63,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.id = token.sub || token.id as string;
         session.user.role = token.role as string;
-        session.user.phone = token.phone as string;
+        session.user.phone = (token.phone as string) || undefined;
       }
       return session;
     },
