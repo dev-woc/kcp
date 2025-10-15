@@ -39,7 +39,7 @@ export default function Nav() {
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/logo.jpeg"
+              src="/logo_new.png"
               alt="Keep Pedaling Foundation Logo"
               width={40}
               height={40}

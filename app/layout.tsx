@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: "/logo.jpeg",
+    icon: "/logo_new.png",
     apple: "/icon-192x192.png",
   },
   themeColor: "#22c55e",
