@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -15,6 +15,7 @@ export default function ApplyPage() {
   const [error, setError] = useState("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [checkingApplication, setCheckingApplication] = useState(true);
 
   const { startUpload, isUploading } = useUploadThing("videoUploader", {
     onClientUploadComplete: () => {
@@ -40,7 +41,30 @@ export default function ApplyPage() {
 
   const currentChallenges = watch("currentChallenges") || [];
 
-  if (status === "loading") {
+  // Check if user already has an application
+  useEffect(() => {
+    const checkExistingApplication = async () => {
+      if (status === "authenticated" && session?.user && session.user.role !== "admin") {
+        try {
+          const response = await fetch("/api/applications");
+          const data = await response.json();
+          if (data.application) {
+            router.push("/dashboard");
+          }
+        } catch (error) {
+          console.error("Error checking application:", error);
+        } finally {
+          setCheckingApplication(false);
+        }
+      } else if (status === "authenticated") {
+        setCheckingApplication(false);
+      }
+    };
+
+    checkExistingApplication();
+  }, [status, session, router]);
+
+  if (status === "loading" || checkingApplication) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
