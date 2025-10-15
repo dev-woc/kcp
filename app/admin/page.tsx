@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Nav from "@/components/nav";
 
 interface Application {
   id: string;
@@ -88,28 +89,18 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-blue-600">Admin Portal</h1>
-            <div className="flex items-center space-x-4">
-              <Link href="/admin" className="text-blue-600 font-semibold">
-                Applications
-              </Link>
-              <Link href="/admin/sessions" className="text-gray-600 hover:text-gray-900">
-                Sessions
-              </Link>
-              <span className="text-gray-700">{session.user.name}</span>
-              <Link href="/api/auth/signout" className="text-gray-600 hover:text-gray-900">
-                Sign Out
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
+          <div className="flex items-center space-x-4 mb-6">
+            <Link href="/admin" className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1">
+              Applications
+            </Link>
+            <Link href="/admin/sessions" className="text-gray-600 hover:text-gray-900">
+              Sessions
+            </Link>
+          </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Application Management</h2>
           <p className="text-gray-600">Review and manage therapy program applications</p>
         </div>
