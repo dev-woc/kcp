@@ -67,6 +67,15 @@ export default function ApplyPage() {
     checkExistingApplication();
   }, [status, session, router]);
 
+  // Populate form with user data when session loads
+  useEffect(() => {
+    if (session?.user) {
+      if (session.user.name) setValue("fullName", session.user.name);
+      if (session.user.email) setValue("email", session.user.email);
+      if (session.user.phone) setValue("phone", session.user.phone);
+    }
+  }, [session, setValue]);
+
   if (status === "loading" || checkingApplication) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
