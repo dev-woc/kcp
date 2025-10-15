@@ -1,16 +1,18 @@
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Nav() {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/" });
+    await signOut({ redirect: false });
+    router.push("/");
   };
 
   const isAdminPath = pathname?.startsWith("/admin");
