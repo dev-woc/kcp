@@ -126,7 +126,7 @@ export default function ApplyPage() {
           </p>
           <div className="mt-4 bg-yellow-50 border-l-4 border-yellow-400 p-4">
             <p className="text-sm text-yellow-700">
-              <strong>Deadline:</strong> January 25th, 2025 at 11:59 PM
+              <strong>Deadline:</strong> November 16th, 2025 at 11:59 PM
             </p>
           </div>
         </div>

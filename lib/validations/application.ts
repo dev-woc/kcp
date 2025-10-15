@@ -16,7 +16,7 @@ export const applicationSchema = z.object({
   weeklyAvailability: z.enum(["Yes", "No"]),
   hasDevice: z.enum(["Yes", "No"]),
   therapyBarriers: z.string().min(10, "Please describe any barriers"),
-  introVideoUrl: z.string().url("Please upload an intro video").optional().or(z.literal("")),
+  introVideoUrl: z.string().url("Invalid video URL").optional().or(z.literal("")).or(z.undefined()),
   therapistPreference: z.enum(["choose_own", "foundation_help"]),
   preferredTherapistName: z.string().optional().or(z.literal("")),
   preferredTherapistContact: z.string().optional().or(z.literal("")),
