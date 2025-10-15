@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import SessionCheckIn from "@/components/session-checkin";
 import Nav from "@/components/nav";
+import VideoUpload from "@/components/video-upload";
 
 export default async function DashboardPage({
   searchParams,
@@ -116,19 +117,10 @@ export default async function DashboardPage({
                 <p className="text-gray-900 whitespace-pre-wrap">{application.therapyGoals}</p>
               </div>
 
-              {application.introVideoUrl && (
-                <div className="border-t pt-6">
-                  <h4 className="font-medium text-gray-700 mb-2">Introduction Video</h4>
-                  <a
-                    href={application.introVideoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-700 underline"
-                  >
-                    View Video
-                  </a>
-                </div>
-              )}
+              <VideoUpload
+                applicationId={application.id}
+                currentVideoUrl={application.introVideoUrl}
+              />
 
               <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mt-6">
                 <p className="text-sm text-blue-700">
