@@ -1,14 +1,19 @@
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function Nav() {
   const { data: session } = useSession();
+  const pathname = usePathname();
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: "/" });
   };
+
+  const isAdminPath = pathname?.startsWith("/admin");
+  const isDashboardPath = pathname?.startsWith("/dashboard");
 
   return (
     <nav className="bg-white shadow-sm">
@@ -20,11 +25,17 @@ export default function Nav() {
           <div className="flex items-center space-x-4">
             {session?.user ? (
               <>
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
+                <Link
+                  href="/dashboard"
+                  className={isDashboardPath ? "text-blue-600 hover:text-blue-700 font-semibold" : "text-gray-600 hover:text-gray-900"}
+                >
                   Dashboard
                 </Link>
                 {session.user.role === "admin" && (
-                  <Link href="/admin" className="text-blue-600 hover:text-blue-700 font-semibold">
+                  <Link
+                    href="/admin"
+                    className={isAdminPath ? "text-blue-600 hover:text-blue-700 font-semibold" : "text-gray-600 hover:text-gray-900"}
+                  >
                     Admin Portal
                   </Link>
                 )}
