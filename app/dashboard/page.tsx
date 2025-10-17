@@ -39,6 +39,13 @@ export default async function DashboardPage({
           </div>
         )}
 
+        {/* Session Check-In (only shown for approved applications) */}
+        {application && application.status === "approved" && (
+          <div className="mb-8">
+            <SessionCheckIn applicationStatus={application.status} />
+          </div>
+        )}
+
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Dashboard</h2>
 
@@ -133,13 +140,6 @@ export default async function DashboardPage({
             </div>
           )}
         </div>
-
-        {/* Session Check-In (only shown for approved applications) */}
-        {application && application.status === "approved" && (
-          <div className="mt-8">
-            <SessionCheckIn applicationStatus={application.status} />
-          </div>
-        )}
       </main>
     </div>
   );
