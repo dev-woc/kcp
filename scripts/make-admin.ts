@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function makeAdmin() {
-  const email = 'wayofcode321@gmail.com';
+  const email = 'B.laurenceau1908@gmail.com';
 
   try {
     const user = await prisma.user.findUnique({

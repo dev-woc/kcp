@@ -5,11 +5,14 @@ import Link from "next/link";
 import SessionCheckIn from "@/components/session-checkin";
 import Nav from "@/components/nav";
 import VideoUpload from "@/components/video-upload";
+import StravaConnect from "@/components/strava-connect";
+import DailyPrompt from "@/components/daily-prompt";
+import { getDailyPrompt } from "@/lib/journal-prompts";
 
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ submitted?: string }>;
+  searchParams: Promise<{ submitted?: string; strava_connected?: string; strava_error?: string }>;
 }) {
   const session = await getServerSession();
   const params = await searchParams;
@@ -17,9 +20,19 @@ export default async function DashboardPage({
     redirect("/login");
   }
 
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      stravaAthleteId: true,
+      stravaConnectedAt: true,
+    },
+  });
+
   const application = await prisma.application.findFirst({
     where: { userId: session.user.id },
   });
+
+  const dailyPrompt = getDailyPrompt();
 
   const statusColors = {
     pending: "bg-yellow-100 text-yellow-800",
@@ -38,6 +51,33 @@ export default async function DashboardPage({
             Application submitted successfully! We'll review your application and get back to you soon.
           </div>
         )}
+
+        {params.strava_connected && (
+          <div className="mb-6 bg-green-50 border border-green-400 text-green-700 px-4 py-3 rounded">
+            Strava connected successfully! Your activities will now be automatically tracked.
+          </div>
+        )}
+
+        {params.strava_error && (
+          <div className="mb-6 bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded">
+            {params.strava_error === "access_denied" && "Strava connection was cancelled."}
+            {params.strava_error === "connection_failed" && "Failed to connect to Strava. Please try again."}
+            {params.strava_error === "missing_params" && "Invalid Strava callback. Please try again."}
+          </div>
+        )}
+
+        {/* Daily Positive Thought / Journal Prompt */}
+        <div className="mb-8">
+          <DailyPrompt prompt={dailyPrompt} />
+        </div>
+
+        {/* Strava Connect */}
+        <div className="mb-8">
+          <StravaConnect
+            isConnected={!!user?.stravaAthleteId}
+            connectedAt={user?.stravaConnectedAt}
+          />
+        </div>
 
         {/* Session Check-In (only shown for approved applications) */}
         {application && application.status === "approved" && (

@@ -32,6 +32,7 @@ export default function Nav() {
 
   const isAdminPath = pathname?.startsWith("/admin");
   const isDashboardPath = pathname?.startsWith("/dashboard");
+  const isHomePath = pathname?.startsWith("/home");
 
   return (
     <nav className="bg-white shadow-sm">
@@ -68,13 +69,22 @@ export default function Nav() {
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                   <Link
+                    href="/home"
+                    onClick={() => setIsDropdownOpen(false)}
+                    className={`block px-4 py-2 text-sm hover:bg-gray-100 ${
+                      isHomePath ? "bg-green-50 text-green-600 font-semibold" : "text-gray-700"
+                    }`}
+                  >
+                    Home
+                  </Link>
+                  <Link
                     href="/dashboard"
                     onClick={() => setIsDropdownOpen(false)}
                     className={`block px-4 py-2 text-sm hover:bg-gray-100 ${
                       isDashboardPath ? "bg-green-50 text-green-600 font-semibold" : "text-gray-700"
                     }`}
                   >
-                    Dashboard
+                    My Application
                   </Link>
                   {session.user.role === "admin" && (
                     <Link

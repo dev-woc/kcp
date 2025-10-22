@@ -1,6 +1,9 @@
 import { z } from "zod";
 
 export const applicationSchema = z.object({
+  consentAccepted: z.boolean().refine((val) => val === true, {
+    message: "You must accept the consent form to proceed",
+  }),
   fullName: z.string().min(1, "Full name is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),

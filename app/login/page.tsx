@@ -34,7 +34,7 @@ function LoginForm() {
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/home");
       router.refresh();
     } catch (err) {
       setError("Something went wrong");

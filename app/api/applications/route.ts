@@ -39,10 +39,13 @@ export async function POST(request: Request) {
     }
 
     // Create the application
+    const { consentAccepted, ...applicationData } = validatedData;
     const application = await prisma.application.create({
       data: {
         userId: session.user.id,
-        ...validatedData,
+        consentAccepted: true,
+        consentAcceptedAt: new Date(),
+        ...applicationData,
       },
     });
 

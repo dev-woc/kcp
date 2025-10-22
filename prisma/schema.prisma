@@ -20,10 +20,21 @@ model User {
   name          String
   phone         String
   role          String        @default("user") // "user" or "admin"
+
+  // Strava integration
+  stravaAthleteId    String?   // Strava athlete ID
+  stravaAccessToken  String?   // Current access token
+  stravaRefreshToken String?   // Refresh token for getting new access tokens
+  stravaTokenExpiry  DateTime? // When the access token expires
+  stravaConnectedAt  DateTime? // When user connected Strava
+
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   applications  Application[]
   sessions      Session[]
+  activities    Activity[]
+
+  @@index([stravaAthleteId])
 }
 
 model Application {
@@ -32,6 +43,8 @@ model Application {
   user                      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Form fields
+  consentAccepted           Boolean  @default(false) // User must accept consent form
+  consentAcceptedAt         DateTime? // When user accepted consent
   fullName                  String
   email                     String
   phone                     String
@@ -98,4 +111,32 @@ model Therapist {
   updatedAt       DateTime @updatedAt
 
   @@index([isActive])
+}
+
+model Activity {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String   @db.ObjectId
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Strava activity data
+  stravaActivityId  String   @unique // Strava's activity ID
+  activityType      String   // "Ride", "Run", etc.
+  name              String   // Activity name from Strava
+  distance          Float    // Distance in meters
+  movingTime        Int      // Moving time in seconds
+  elapsedTime       Int      // Elapsed time in seconds
+  totalElevationGain Float   // Elevation gain in meters
+  startDate         DateTime // When the activity started
+  averageSpeed      Float?   // Average speed in m/s
+  maxSpeed          Float?   // Max speed in m/s
+
+  // KPF specific
+  isWednesdayRide   Boolean  @default(false) // Is this a KPF Wednesday ride?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId])
+  @@index([startDate])
+  @@index([isWednesdayRide])
 }

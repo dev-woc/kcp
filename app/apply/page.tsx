@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { applicationSchema, challengeOptions, type ApplicationFormData } from "@/lib/validations/application";
 import { useUploadThing } from "@/lib/uploadthing";
+import ConsentForm from "@/components/consent-form";
 
 export default function ApplyPage() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function ApplyPage() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [checkingApplication, setCheckingApplication] = useState(true);
+  const [consentAccepted, setConsentAccepted] = useState(false);
 
   const { startUpload, isUploading } = useUploadThing("videoUploader", {
     onClientUploadComplete: () => {
@@ -35,6 +37,7 @@ export default function ApplyPage() {
   } = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
+      consentAccepted: true,
       fullName: session?.user?.name || "",
       email: session?.user?.email || "",
       phone: session?.user?.phone || "",
@@ -127,6 +130,8 @@ export default function ApplyPage() {
         },
         body: JSON.stringify({
           ...data,
+          consentAccepted: true,
+          consentAcceptedAt: new Date().toISOString(),
           introVideoUrl: videoUrl || undefined,
         }),
       });
@@ -153,19 +158,24 @@ export default function ApplyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Application Form</h1>
-          <p className="mt-2 text-gray-600">
-            Complete this form to apply for the Cycle of Support program
-          </p>
-          <div className="mt-4 bg-yellow-50 border-l-4 border-yellow-400 p-4">
-            <p className="text-sm text-yellow-700">
-              <strong>Deadline:</strong> November 16th, 2025 at 11:59 PM
+    <>
+      {!consentAccepted && (
+        <ConsentForm onAccept={() => setConsentAccepted(true)} />
+      )}
+
+      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Application Form</h1>
+            <p className="mt-2 text-gray-600">
+              Complete this form to apply for the Cycle of Support program
             </p>
+            <div className="mt-4 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+              <p className="text-sm text-yellow-700">
+                <strong>Deadline:</strong> November 16th, 2025 at 11:59 PM
+              </p>
+            </div>
           </div>
-        </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-white p-8 rounded-lg shadow">
           {error && (
@@ -599,5 +609,6 @@ export default function ApplyPage() {
         </form>
       </div>
     </div>
+    </>
   );
 }
