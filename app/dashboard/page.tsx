@@ -8,6 +8,7 @@ import VideoUpload from "@/components/video-upload";
 import StravaConnect from "@/components/strava-connect";
 import DailyPrompt from "@/components/daily-prompt";
 import PersonalStravaStats from "@/components/personal-strava-stats";
+import JournalStats from "@/components/journal-stats";
 import { getDailyPrompt } from "@/lib/journal-prompts";
 
 export default async function DashboardPage({
@@ -66,6 +67,11 @@ export default async function DashboardPage({
             {params.strava_error === "missing_params" && "Invalid Strava callback. Please try again."}
           </div>
         )}
+
+        {/* Journal Stats */}
+        <div className="mb-8">
+          <JournalStats />
+        </div>
 
         {/* Daily Positive Thought / Journal Prompt */}
         <div className="mb-8">

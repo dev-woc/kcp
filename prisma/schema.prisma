@@ -33,6 +33,7 @@ model User {
   applications  Application[]
   sessions      Session[]
   activities    Activity[]
+  journalEntries JournalEntry[]
 
   @@index([stravaAthleteId])
 }
@@ -139,4 +140,22 @@ model Activity {
   @@index([userId])
   @@index([startDate])
   @@index([isWednesdayRide])
+}
+
+model JournalEntry {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Journal content
+  prompt      String   // The prompt question
+  category    String   // gratitude, reflection, growth, mindfulness, affirmation
+  entry       String   // User's journal entry text
+  wordCount   Int      // Number of words in the entry
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
 }

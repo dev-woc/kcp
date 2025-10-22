@@ -10,6 +10,8 @@ interface DailyPromptProps {
 export default function DailyPrompt({ prompt }: DailyPromptProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [journalEntry, setJournalEntry] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const getCategoryColor = (category: JournalPrompt["category"]) => {
     switch (category) {
@@ -97,7 +99,63 @@ export default function DailyPrompt({ prompt }: DailyPromptProps) {
             <p className="text-xs opacity-75">
               💡 Tip: Try writing for at least 3-5 minutes without stopping
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
+              {journalEntry.trim() && !saved && (
+                <button
+                  onClick={async () => {
+                    setSaving(true);
+                    try {
+                      const response = await fetch('/api/journal', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          prompt: prompt.prompt,
+                          category: prompt.category,
+                          entry: journalEntry,
+                        }),
+                      });
+
+                      if (response.ok) {
+                        setSaved(true);
+                      } else {
+                        alert('Failed to save journal entry');
+                      }
+                    } catch (error) {
+                      console.error('Error saving journal:', error);
+                      alert('Failed to save journal entry');
+                    } finally {
+                      setSaving(false);
+                    }
+                  }}
+                  disabled={saving}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium flex items-center gap-2 disabled:bg-gray-400"
+                >
+                  {saving ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Save Entry
+                    </>
+                  )}
+                </button>
+              )}
+              {saved && (
+                <div className="px-4 py-2 bg-green-100 text-green-800 rounded-lg text-sm font-medium flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Saved!
+                </div>
+              )}
               {journalEntry.trim() && (
                 <button
                   onClick={() => {
@@ -119,16 +177,19 @@ export default function DailyPrompt({ prompt }: DailyPromptProps) {
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                   }}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium flex items-center gap-2"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center gap-2"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                   </svg>
-                  Save to Phone
+                  Download
                 </button>
               )}
               <button
-                onClick={() => setIsExpanded(false)}
+                onClick={() => {
+                  setIsExpanded(false);
+                  setSaved(false);
+                }}
                 className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium"
               >
                 Done
