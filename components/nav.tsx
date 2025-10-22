@@ -84,7 +84,7 @@ export default function Nav() {
                       isDashboardPath ? "bg-green-50 text-green-600 font-semibold" : "text-gray-700"
                     }`}
                   >
-                    My Application
+                    Dashboard
                   </Link>
                   {session.user.role === "admin" && (
                     <Link
