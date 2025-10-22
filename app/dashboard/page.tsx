@@ -7,6 +7,7 @@ import Nav from "@/components/nav";
 import VideoUpload from "@/components/video-upload";
 import StravaConnect from "@/components/strava-connect";
 import DailyPrompt from "@/components/daily-prompt";
+import PersonalStravaStats from "@/components/personal-strava-stats";
 import { getDailyPrompt } from "@/lib/journal-prompts";
 
 export default async function DashboardPage({
@@ -78,6 +79,13 @@ export default async function DashboardPage({
             connectedAt={user?.stravaConnectedAt}
           />
         </div>
+
+        {/* Personal Strava Stats (only shown when connected) */}
+        {user?.stravaAthleteId && (
+          <div className="mb-8">
+            <PersonalStravaStats />
+          </div>
+        )}
 
         {/* Session Check-In (only shown for approved applications) */}
         {application && application.status === "approved" && (
