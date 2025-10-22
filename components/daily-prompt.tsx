@@ -60,9 +60,18 @@ export default function DailyPrompt({ prompt }: DailyPromptProps) {
         </div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-sm font-medium hover:underline"
+          className="p-2 hover:bg-white hover:bg-opacity-50 rounded-full transition-all"
+          aria-label={isExpanded ? "Collapse" : "Expand"}
         >
-          {isExpanded ? "Collapse" : "Expand"}
+          {isExpanded ? (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          )}
         </button>
       </div>
 
