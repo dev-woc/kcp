@@ -9,6 +9,7 @@ interface DailyPromptProps {
 
 export default function DailyPrompt({ prompt }: DailyPromptProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [journalEntry, setJournalEntry] = useState("");
 
   const getCategoryColor = (category: JournalPrompt["category"]) => {
     switch (category) {
@@ -86,6 +87,8 @@ export default function DailyPrompt({ prompt }: DailyPromptProps) {
       {isExpanded && (
         <div className="mt-4 space-y-3">
           <textarea
+            value={journalEntry}
+            onChange={(e) => setJournalEntry(e.target.value)}
             placeholder="Your thoughts... (This is private and not saved)"
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none bg-white text-black"
             rows={6}
@@ -94,12 +97,43 @@ export default function DailyPrompt({ prompt }: DailyPromptProps) {
             <p className="text-xs opacity-75">
               💡 Tip: Try writing for at least 3-5 minutes without stopping
             </p>
-            <button
-              onClick={() => setIsExpanded(false)}
-              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium"
-            >
-              Done
-            </button>
+            <div className="flex gap-2">
+              {journalEntry.trim() && (
+                <button
+                  onClick={() => {
+                    const date = new Date().toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    });
+                    const content = `Daily Reflection - ${date}\n\nPrompt: ${prompt.prompt}\n\nCategory: ${prompt.category.charAt(0).toUpperCase() + prompt.category.slice(1)}\n\n---\n\n${journalEntry}`;
+
+                    // Create a blob and download
+                    const blob = new Blob([content], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `journal-${new Date().toISOString().split('T')[0]}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                  }}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Save to Phone
+                </button>
+              )}
+              <button
+                onClick={() => setIsExpanded(false)}
+                className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium"
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}
