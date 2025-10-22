@@ -61,6 +61,29 @@ export async function POST(request: Request) {
       );
     }
 
+    // Check if user already checked in today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const todaySession = await prisma.session.findFirst({
+      where: {
+        userId: session.user.id,
+        checkInTime: {
+          gte: today,
+          lt: tomorrow,
+        },
+      },
+    });
+
+    if (todaySession) {
+      return NextResponse.json(
+        { error: "You can only check in once per day. Please try again tomorrow." },
+        { status: 400 }
+      );
+    }
+
     // Check if this session number already exists
     const existingSession = await prisma.session.findFirst({
       where: {

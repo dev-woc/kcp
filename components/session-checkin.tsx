@@ -28,6 +28,7 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
     therapistName: "",
   });
   const [error, setError] = useState("");
+  const [canCheckInToday, setCanCheckInToday] = useState(true);
 
   useEffect(() => {
     fetchSessions();
@@ -37,7 +38,20 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
     try {
       const response = await fetch("/api/sessions");
       const data = await response.json();
-      setSessions(data.sessions || []);
+      const fetchedSessions = data.sessions || [];
+      setSessions(fetchedSessions);
+
+      // Check if user already checked in today
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const hasCheckedInToday = fetchedSessions.some((session: Session) => {
+        const sessionDate = new Date(session.checkInTime);
+        sessionDate.setHours(0, 0, 0, 0);
+        return sessionDate.getTime() === today.getTime();
+      });
+
+      setCanCheckInToday(!hasCheckedInToday);
     } catch (error) {
       console.error("Error fetching sessions:", error);
     } finally {
@@ -87,6 +101,13 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
 
   const nextSession = getNextSessionNumber();
 
+  // Update form data when next session changes
+  useEffect(() => {
+    if (nextSession) {
+      setFormData(prev => ({ ...prev, sessionNumber: nextSession }));
+    }
+  }, [nextSession]);
+
   if (applicationStatus !== "approved") {
     return null; // Don't show check-in for non-approved users
   }
@@ -95,13 +116,18 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Therapy Sessions</h2>
-        {nextSession && !showCheckInForm && (
+        {nextSession && !showCheckInForm && canCheckInToday && (
           <button
             onClick={() => setShowCheckInForm(true)}
             className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-semibold"
           >
             Check In - Session {nextSession}
           </button>
+        )}
+        {nextSession && !canCheckInToday && (
+          <div className="text-sm text-gray-600 bg-gray-100 px-4 py-2 rounded-lg">
+            ✓ Already checked in today
+          </div>
         )}
       </div>
 
@@ -122,23 +148,15 @@ export default function SessionCheckIn({ applicationStatus }: SessionCheckInProp
               <label className="block text-sm font-medium text-gray-700">
                 Session Number
               </label>
-              <select
-                value={formData.sessionNumber}
-                onChange={(e) =>
-                  setFormData({ ...formData, sessionNumber: Number(e.target.value) })
-                }
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-              >
-                {[1, 2, 3, 4].map((num) => (
-                  <option
-                    key={num}
-                    value={num}
-                    disabled={sessions.some((s) => s.sessionNumber === num)}
-                  >
-                    Session {num} {sessions.some((s) => s.sessionNumber === num) && "(Completed)"}
-                  </option>
-                ))}
-              </select>
+              <input
+                type="text"
+                value={`Session ${formData.sessionNumber}`}
+                disabled
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-gray-700 cursor-not-allowed"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Automatically assigned based on your progress
+              </p>
             </div>
 
             <div>
