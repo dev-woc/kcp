@@ -5,24 +5,53 @@ import Nav from "@/components/nav";
 import { prisma } from "@/lib/prisma";
 
 async function getMetrics() {
+  // Mental Health Support Metrics
+  const totalCheckInSessions = await prisma.session.count();
+
   const totalApprovedApplications = await prisma.application.count({
     where: { status: "approved" },
   });
-
-  const totalCheckInSessions = await prisma.session.count();
-
-  const totalApplications = await prisma.application.count();
 
   const totalTherapists = await prisma.therapist.count({
     where: { isActive: true },
   });
 
+  // Total journal entries written (mental health tracking)
+  const totalJournalEntries = await prisma.journalEntry.count();
+
+  // Total words written in journals
+  const journalStats = await prisma.journalEntry.aggregate({
+    _sum: {
+      wordCount: true,
+    },
+  });
+
+  // Active community members (users with applications)
+  const activeCommunityMembers = await prisma.user.count({
+    where: {
+      applications: {
+        some: {},
+      },
+    },
+  });
+
+  // Days of continuous support (from first application)
+  const firstApplication = await prisma.application.findFirst({
+    orderBy: { submittedAt: "asc" },
+    select: { submittedAt: true },
+  });
+
+  const daysOfSupport = firstApplication
+    ? Math.floor(
+        (new Date().getTime() - new Date(firstApplication.submittedAt).getTime()) /
+          (1000 * 60 * 60 * 24)
+      )
+    : 0;
+
   // Get total number of Wednesday rides tracked via Strava
   const totalWednesdayRides = await prisma.activity.count({
     where: { isWednesdayRide: true },
   });
-
-  const totalActivities = await prisma.activity.count();
 
   // Get aggregate statistics for all activities
   const activityStats = await prisma.activity.aggregate({
@@ -37,22 +66,15 @@ async function getMetrics() {
     where: { stravaAthleteId: { not: null } },
   });
 
-  // Calculate fallback estimated rides if no Strava data
-  const foundationStartDate = new Date("2024-01-01");
-  const currentDate = new Date();
-  const weeksPassed = Math.floor(
-    (currentDate.getTime() - foundationStartDate.getTime()) / (1000 * 60 * 60 * 24 * 7)
-  );
-  const estimatedRides = totalWednesdayRides > 0 ? totalWednesdayRides : weeksPassed;
-
   return {
-    totalApprovedApplications,
     totalCheckInSessions,
-    totalApplications,
+    totalApprovedApplications,
     totalTherapists,
-    estimatedRides,
+    totalJournalEntries,
+    totalWordsWritten: journalStats._sum.wordCount || 0,
+    activeCommunityMembers,
+    daysOfSupport,
     totalWednesdayRides,
-    totalActivities,
     totalDistanceMiles: ((activityStats._sum.distance || 0) * 0.000621371).toFixed(1),
     totalElevationFeet: ((activityStats._sum.totalElevationGain || 0) * 3.28084).toFixed(0),
     stravaConnectedUsers,
@@ -84,6 +106,23 @@ export default async function HomePage() {
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Pedaling toward healing, resilience, and a brighter, healthier future
+          </p>
+        </div>
+
+        {/* Our Mission */}
+        <div className="bg-white rounded-lg shadow-md p-8 mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+            Our Mission
+          </h2>
+          <p className="text-gray-700 mb-4">
+            The Keep Pedaling Foundation is committed to advancing mental health
+            awareness and breaking down barriers to support. We believe in the power
+            of movement, community, and connection to promote healing and resilience.
+          </p>
+          <p className="text-gray-700">
+            Whether you're a seasoned rider or just beginning your journey, our weekly
+            rides and mental health resources are here to support you every pedal of
+            the way.
           </p>
         </div>
 
@@ -129,40 +168,102 @@ export default async function HomePage() {
           </div>
         )}
 
-        {/* Program Impact Metrics */}
+        {/* Mental Health Impact Metrics */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Our Impact</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Mental Health Impact</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">
-                {metrics.estimatedRides}
-              </div>
-              <div className="text-gray-600 font-medium">Community Rides</div>
-              <div className="text-sm text-gray-500 mt-1">Every Wednesday</div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-lg shadow-md p-6 text-center">
+              <div className="text-4xl font-bold text-purple-600 mb-2">
                 {metrics.totalCheckInSessions}
               </div>
-              <div className="text-gray-600 font-medium">Therapy Sessions</div>
-              <div className="text-sm text-gray-500 mt-1">Completed globally</div>
+              <div className="text-gray-700 font-medium">Therapy Hours Provided</div>
+              <div className="text-sm text-gray-600 mt-1">Professional support sessions</div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">
-                {metrics.totalApprovedApplications}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg shadow-md p-6 text-center">
+              <div className="text-4xl font-bold text-blue-600 mb-2">
+                {metrics.totalJournalEntries}
               </div>
-              <div className="text-gray-600 font-medium">Lives Supported</div>
-              <div className="text-sm text-gray-500 mt-1">Approved applicants</div>
+              <div className="text-gray-700 font-medium">Reflections Journaled</div>
+              <div className="text-sm text-gray-600 mt-1">{metrics.totalWordsWritten.toLocaleString()} words of healing</div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">
-                {metrics.totalTherapists}
+            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-lg shadow-md p-6 text-center">
+              <div className="text-4xl font-bold text-teal-600 mb-2">
+                {metrics.activeCommunityMembers}
               </div>
-              <div className="text-gray-600 font-medium">Partner Therapists</div>
-              <div className="text-sm text-gray-500 mt-1">In our network</div>
+              <div className="text-gray-700 font-medium">Active Community</div>
+              <div className="text-sm text-gray-600 mt-1">Members on healing journey</div>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg shadow-md p-6 text-center">
+              <div className="text-4xl font-bold text-green-600 mb-2">
+                {metrics.daysOfSupport}
+              </div>
+              <div className="text-gray-700 font-medium">Days of Support</div>
+              <div className="text-sm text-gray-600 mt-1">Continuous mental health care</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Cycling Mental Health Benefits */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Why Cycling Heals 🚴‍♀️
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-yellow-50 to-orange-50 border-l-4 border-yellow-400 rounded-lg shadow-md p-6">
+              <div className="text-3xl mb-3">🧠</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Boosts Brain Chemistry</h3>
+              <p className="text-gray-700 text-sm">
+                Just 30 minutes of cycling releases endorphins, serotonin, and dopamine -
+                nature's antidepressants that improve mood and reduce anxiety.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border-l-4 border-blue-400 rounded-lg shadow-md p-6">
+              <div className="text-3xl mb-3">😌</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Reduces Stress by 68%</h3>
+              <p className="text-gray-700 text-sm">
+                Studies show regular cycling can reduce stress, anxiety, and depression levels
+                by up to 68% while improving overall mental well-being.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-teal-50 border-l-4 border-green-400 rounded-lg shadow-md p-6">
+              <div className="text-3xl mb-3">💪</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Builds Self-Esteem</h3>
+              <p className="text-gray-700 text-sm">
+                Setting and achieving cycling goals, no matter how small, builds confidence
+                and creates a sense of accomplishment that transfers to daily life.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 border-l-4 border-purple-400 rounded-lg shadow-md p-6">
+              <div className="text-3xl mb-3">🧘‍♀️</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Meditation in Motion</h3>
+              <p className="text-gray-700 text-sm">
+                The rhythmic nature of pedaling creates a meditative state, helping quiet
+                racing thoughts and providing mental clarity and focus.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-red-50 to-rose-50 border-l-4 border-red-400 rounded-lg shadow-md p-6">
+              <div className="text-3xl mb-3">❤️</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Connects Community</h3>
+              <p className="text-gray-700 text-sm">
+                Group rides combat isolation and loneliness - key factors in mental health.
+                Shared experiences create meaningful connections and support networks.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-indigo-50 to-violet-50 border-l-4 border-indigo-400 rounded-lg shadow-md p-6">
+              <div className="text-3xl mb-3">😴</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Improves Sleep Quality</h3>
+              <p className="text-gray-700 text-sm">
+                Regular cycling helps regulate circadian rhythms and reduces insomnia,
+                leading to deeper, more restorative sleep - crucial for mental health.
+              </p>
             </div>
           </div>
         </div>
@@ -208,39 +309,21 @@ export default async function HomePage() {
         )}
 
         {/* About the Program */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              The Cycle of Support
-            </h2>
-            <p className="text-gray-700 mb-4">
-              Our flagship program connects individuals with free, accessible therapy
-              resources through a network of partnerships, sponsorships, and donations.
-              We remove financial barriers to mental health care, ensuring everyone has
-              access to the support they need.
-            </p>
-            <p className="text-gray-700">
-              By combining the transformative power of cycling with mental health support,
-              we create a community where physical well-being and emotional healing go
-              hand in hand.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Our Mission
-            </h2>
-            <p className="text-gray-700 mb-4">
-              The Keep Pedaling Foundation is committed to advancing mental health
-              awareness and breaking down barriers to support. We believe in the power
-              of movement, community, and connection to promote healing and resilience.
-            </p>
-            <p className="text-gray-700">
-              Whether you're a seasoned rider or just beginning your journey, our weekly
-              rides and mental health resources are here to support you every pedal of
-              the way.
-            </p>
-          </div>
+        <div className="bg-white rounded-lg shadow-md p-8 mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+            The Cycle of Support
+          </h2>
+          <p className="text-gray-700 mb-4">
+            Our flagship program connects individuals with free, accessible therapy
+            resources through a network of partnerships, sponsorships, and donations.
+            We remove financial barriers to mental health care, ensuring everyone has
+            access to the support they need.
+          </p>
+          <p className="text-gray-700">
+            By combining the transformative power of cycling with mental health support,
+            we create a community where physical well-being and emotional healing go
+            hand in hand.
+          </p>
         </div>
 
         {/* How It Works */}

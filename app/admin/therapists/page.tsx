@@ -169,6 +169,9 @@ export default function TherapistsPage() {
             <Link href="/admin/therapists" className="text-green-600 font-semibold border-b-2 border-green-600 pb-1">
               Therapists
             </Link>
+            <Link href="/admin/users" className="text-gray-600 hover:text-gray-900">
+              Users
+            </Link>
           </div>
           <div className="flex items-center justify-between">
             <div>

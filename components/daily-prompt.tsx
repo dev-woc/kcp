@@ -83,7 +83,7 @@ export default function DailyPrompt({ prompt }: DailyPromptProps) {
       </p>
 
       <p className="text-sm opacity-75 mb-4">
-        Take a moment to reflect on this question. Journaling is optional but can be a helpful tool for self-discovery and growth.
+        Take a moment to reflect on this question. Journaling is optional and can be a helpful tool for self-discovery and growth.
       </p>
 
       {isExpanded && (

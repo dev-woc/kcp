@@ -103,6 +103,9 @@ export default function AdminPage() {
             <Link href="/admin/therapists" className="text-gray-600 hover:text-gray-900">
               Therapists
             </Link>
+            <Link href="/admin/users" className="text-gray-600 hover:text-gray-900">
+              Users
+            </Link>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Application Management</h2>
           <p className="text-gray-600">Review and manage therapy program applications</p>
