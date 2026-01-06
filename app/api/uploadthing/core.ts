@@ -2,7 +2,16 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { getServerSession } from "@/lib/auth";
 import { authOptions } from "@/lib/auth";
 
-const f = createUploadthing();
+const f = createUploadthing({
+  errorFormatter: (err) => {
+    console.error("UploadThing error:", err);
+    return {
+      message: err.message,
+      code: err.code,
+      data: err.data,
+    };
+  },
+});
 
 export const ourFileRouter = {
   videoUploader: f({ video: { maxFileSize: "32MB", maxFileCount: 1 } })
@@ -22,11 +31,12 @@ export const ourFileRouter = {
   driversLicenseUploader: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(async () => {
       // Driver's license upload - no auth required for bike signup
-      return {};
+      return { uploadedBy: "bike-signup" };
     })
-    .onUploadComplete(async ({ file }) => {
+    .onUploadComplete(async ({ metadata, file }) => {
       console.log("Driver's license upload complete");
       console.log("file url", file.url);
+      console.log("metadata", metadata);
 
       return { url: file.url };
     }),

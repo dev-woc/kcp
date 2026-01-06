@@ -79,9 +79,16 @@ export default function BikeSignupPage() {
 
       // Upload driver's license if needed
       if (formData.needsBikeRental === "yes" && driversLicenseFile) {
-        const uploadResult = await startUpload([driversLicenseFile]);
-        if (uploadResult && uploadResult[0]) {
-          driversLicenseUrl = uploadResult[0].url;
+        try {
+          const uploadResult = await startUpload([driversLicenseFile]);
+          if (uploadResult && uploadResult[0]) {
+            driversLicenseUrl = uploadResult[0].url;
+          } else {
+            throw new Error("Failed to upload driver's license");
+          }
+        } catch (uploadError) {
+          console.error("Upload error:", uploadError);
+          throw new Error("Failed to upload driver's license. Please try again.");
         }
       }
 
