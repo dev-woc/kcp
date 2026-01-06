@@ -159,3 +159,34 @@ model JournalEntry {
   @@index([userId])
   @@index([createdAt])
 }
+
+model BikeSignup {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Contact & Preferences
+  instagramHandle       String?  // Optional Instagram handle for group chat
+  rideGroup             String   // "cruising" or "exercise"
+
+  // Consent & Waivers
+  generalConsentAccepted Boolean @default(false)
+  generalConsentAcceptedAt DateTime?
+
+  // Bike Rental
+  needsBikeRental       Boolean  @default(false)
+  driversLicenseUrl     String?  // URL to uploaded driver's license
+  rentalConsentAccepted Boolean  @default(false)
+  rentalConsentAcceptedAt DateTime?
+
+  // Metadata
+  email                 String   // For follow-up
+  name                  String   // Participant name
+  submittedAt           DateTime @default(now())
+  rideDate              DateTime? // Optional: Which Wednesday ride they're signing up for
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([email])
+  @@index([submittedAt])
+  @@index([rideDate])
+}

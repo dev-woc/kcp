@@ -378,50 +378,39 @@ export default async function HomePage() {
             amazing community.
           </p>
 
-          {/* Map - Update the src URL with your actual route */}
+          {/* Meeting Location Map */}
           <div className="mb-6 rounded-lg overflow-hidden shadow-md">
-            <div className="bg-gray-100 p-4 text-center text-gray-600 text-sm">
-              <p className="mb-2">Route map will be displayed here</p>
-              <p className="text-xs">
-                To add your route: Update the iframe src with your Strava route embed URL,
-                Google Maps embed, or RideWithGPS embed
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3505.2846754872885!2d-81.36589492347656!3d28.533701975722244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e77a0d6f0c0001%3A0x8f8f8f8f8f8f8f8f!2s825%20McCullough%20Ave%2C%20Orlando%2C%20FL%2032803!5e0!3m2!1sen!2sus!4v1234567890123"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full"
+            />
+            <div className="bg-gray-50 p-4 text-center">
+              <p className="text-sm font-semibold text-gray-900">Meeting Point</p>
+              <p className="text-sm text-gray-600 mt-1">
+                825 McCullough Ave, Orlando FL 32803
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Parking in Fashion Square Mall Parking lot across from complex
               </p>
             </div>
-            {/* Placeholder - Replace with actual route embed */}
-            {/* Example for Strava route:
-            <iframe
-              src="https://www.strava.com/routes/YOUR_ROUTE_ID/embed"
-              width="100%"
-              height="400"
-              frameBorder="0"
-              allowFullScreen
-              className="w-full"
-            />
-            */}
-            {/* Example for Google Maps:
-            <iframe
-              src="https://www.google.com/maps/embed?pb=YOUR_EMBED_CODE"
-              width="100%"
-              height="400"
-              frameBorder="0"
-              allowFullScreen
-              className="w-full"
-            />
-            */}
           </div>
 
           {/* Signup Link */}
           <div className="text-center">
-            <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLScBDwQGfU4yTLuAE006qle3TNIwhk-KVgOVoGeTrAw3grqrEw/viewform"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/bike-signup"
               className="inline-block bg-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-colors text-lg shadow-md"
             >
               Sign Up for Next Wednesday's Ride
-            </a>
+            </Link>
             <p className="text-gray-600 text-sm mt-3">
-              Fill out our quick form to join the ride
+              Complete our signup form to join the ride
             </p>
           </div>
         </div>
