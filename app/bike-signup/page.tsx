@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useUploadThing } from "@/lib/uploadthing";
 import Link from "next/link";
 
 export default function BikeSignupPage() {
@@ -35,15 +34,7 @@ export default function BikeSignupPage() {
 
   const [driversLicenseFile, setDriversLicenseFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-
-  const { startUpload, isUploading } = useUploadThing("driversLicenseUploader", {
-    onClientUploadComplete: () => {
-      setUploadProgress(100);
-    },
-    onUploadProgress: (progress) => {
-      setUploadProgress(progress);
-    },
-  });
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,15 +71,32 @@ export default function BikeSignupPage() {
       // Upload driver's license if needed
       if (formData.needsBikeRental === "yes" && driversLicenseFile) {
         try {
-          const uploadResult = await startUpload([driversLicenseFile]);
-          if (uploadResult && uploadResult[0]) {
-            driversLicenseUrl = uploadResult[0].url;
-          } else {
-            throw new Error("Failed to upload driver's license");
+          setIsUploading(true);
+          setUploadProgress(0);
+
+          const uploadFormData = new FormData();
+          uploadFormData.append("file", driversLicenseFile);
+
+          const uploadResponse = await fetch("/api/upload-license", {
+            method: "POST",
+            body: uploadFormData,
+          });
+
+          setUploadProgress(50);
+
+          if (!uploadResponse.ok) {
+            const errorData = await uploadResponse.json();
+            throw new Error(errorData.error || "Failed to upload driver's license");
           }
+
+          const uploadResult = await uploadResponse.json();
+          driversLicenseUrl = uploadResult.url;
+          setUploadProgress(100);
+          setIsUploading(false);
         } catch (uploadError) {
           console.error("Upload error:", uploadError);
-          throw new Error("Failed to upload driver's license. Please try again.");
+          setIsUploading(false);
+          throw new Error(uploadError instanceof Error ? uploadError.message : "Failed to upload driver's license. Please try again.");
         }
       }
 

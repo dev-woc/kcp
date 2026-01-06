@@ -28,17 +28,27 @@ export const ourFileRouter = {
 
       return { uploadedBy: metadata.userId, url: file.url };
     }),
-  driversLicenseUploader: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
+  driversLicenseUploader: f({
+      image: {
+        maxFileSize: "8MB",
+        maxFileCount: 1,
+      }
+    })
     .middleware(async () => {
-      // Driver's license upload - no auth required for bike signup
-      return { uploadedBy: "bike-signup" };
+      // Driver's license upload - check for session but don't require it
+      const session = await getServerSession();
+
+      return {
+        uploadedBy: session?.user?.id || "anonymous",
+        uploadType: "drivers-license"
+      };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("Driver's license upload complete");
       console.log("file url", file.url);
       console.log("metadata", metadata);
 
-      return { url: file.url };
+      return { uploadedBy: metadata.uploadedBy, url: file.url };
     }),
 } satisfies FileRouter;
 
