@@ -92,6 +92,9 @@ export default function AdminUsersPage() {
             <Link href="/admin/users" className="text-green-600 font-semibold border-b-2 border-green-600 pb-1">
               Users
             </Link>
+            <Link href="/admin/bike-signups" className="text-gray-600 hover:text-gray-900">
+              Bike Signups
+            </Link>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">User Management</h2>
           <p className="text-gray-600">View and manage all registered users</p>
