@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useUploadThing } from "@/lib/uploadthing";
 import Link from "next/link";
 
 export default function BikeSignupPage() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [step, setStep] = useState<"form" | "general-waiver" | "rental-waiver" | "complete">("form");
@@ -19,6 +21,17 @@ export default function BikeSignupPage() {
     rideGroup: "",
     needsBikeRental: "",
   });
+
+  // Auto-populate form with user data when session loads
+  useEffect(() => {
+    if (session?.user) {
+      setFormData((prev) => ({
+        ...prev,
+        name: session.user.name || prev.name,
+        email: session.user.email || prev.email,
+      }));
+    }
+  }, [session]);
 
   const [driversLicenseFile, setDriversLicenseFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
