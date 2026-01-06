@@ -269,7 +269,7 @@ export default async function HomePage() {
         </div>
 
         {/* Strava Ride Statistics */}
-        {metrics.stravaConnectedUsers > 0 && (
+        {/* {metrics.stravaConnectedUsers > 0 && (
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
               Ride Statistics
@@ -306,7 +306,7 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* About the Program */}
         <div className="bg-white rounded-lg shadow-md p-8 mb-12">
@@ -367,12 +367,71 @@ export default async function HomePage() {
           </div>
         </div>
 
+        {/* Weekly Bike Sessions */}
+        <div className="bg-white rounded-lg shadow-md p-8 mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
+            Weekly Bike Sessions
+          </h2>
+          <p className="text-gray-700 mb-6 text-center max-w-2xl mx-auto">
+            Join us every Wednesday for our community bike rides. All levels welcome!
+            Experience the mental health benefits of cycling while connecting with an
+            amazing community.
+          </p>
+
+          {/* Map - Update the src URL with your actual route */}
+          <div className="mb-6 rounded-lg overflow-hidden shadow-md">
+            <div className="bg-gray-100 p-4 text-center text-gray-600 text-sm">
+              <p className="mb-2">Route map will be displayed here</p>
+              <p className="text-xs">
+                To add your route: Update the iframe src with your Strava route embed URL,
+                Google Maps embed, or RideWithGPS embed
+              </p>
+            </div>
+            {/* Placeholder - Replace with actual route embed */}
+            {/* Example for Strava route:
+            <iframe
+              src="https://www.strava.com/routes/YOUR_ROUTE_ID/embed"
+              width="100%"
+              height="400"
+              frameBorder="0"
+              allowFullScreen
+              className="w-full"
+            />
+            */}
+            {/* Example for Google Maps:
+            <iframe
+              src="https://www.google.com/maps/embed?pb=YOUR_EMBED_CODE"
+              width="100%"
+              height="400"
+              frameBorder="0"
+              allowFullScreen
+              className="w-full"
+            />
+            */}
+          </div>
+
+          {/* Signup Link */}
+          <div className="text-center">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLScBDwQGfU4yTLuAE006qle3TNIwhk-KVgOVoGeTrAw3grqrEw/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-colors text-lg shadow-md"
+            >
+              Sign Up for Next Wednesday's Ride
+            </a>
+            <p className="text-gray-600 text-sm mt-3">
+              Fill out our quick form to join the ride
+            </p>
+          </div>
+        </div>
+
         {/* Community Section */}
         <div className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
           <p className="text-lg mb-6 max-w-2xl mx-auto">
-            Connect with others on their healing journey. Join us for weekly rides every
-            Wednesday and be part of a community that supports mental health and wellness.
+            Connect with others on their healing journey. Be part of a community that
+            supports mental health and wellness through cycling and connection.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
