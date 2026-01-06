@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Nav from "@/components/nav";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 interface BikeSignup {
   id: string;
@@ -53,6 +55,135 @@ export default function AdminBikeSignupsPage() {
     }
   };
 
+  const exportToCSV = (eventDate: string, eventSignups: BikeSignup[]) => {
+    const headers = ["Name", "Email", "Instagram", "Ride Group", "Bike Rental", "Submitted At"];
+    const rows = eventSignups.map(signup => [
+      signup.name,
+      signup.email,
+      signup.instagramHandle || "-",
+      signup.rideGroup === "cruising" ? "Cruising" : "Exercise",
+      signup.needsBikeRental ? "Yes" : "No",
+      new Date(signup.submittedAt).toLocaleString(),
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(",")),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `bike-signups-${eventDate.replace(/\s/g, "-")}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const exportToPDF = (eventDate: string, eventSignups: BikeSignup[]) => {
+    const doc = new jsPDF();
+
+    // Title
+    doc.setFontSize(18);
+    doc.text("Keep Pedaling Foundation", 14, 20);
+    doc.setFontSize(14);
+    doc.text(`Bike Ride Signups - ${eventDate}`, 14, 30);
+
+    // Stats
+    doc.setFontSize(10);
+    doc.text(`Total Participants: ${eventSignups.length}`, 14, 40);
+    doc.text(`Cruising Group: ${eventSignups.filter(s => s.rideGroup === "cruising").length}`, 14, 46);
+    doc.text(`Exercise Group: ${eventSignups.filter(s => s.rideGroup === "exercise").length}`, 14, 52);
+    doc.text(`Bike Rentals Needed: ${eventSignups.filter(s => s.needsBikeRental).length}`, 14, 58);
+
+    // Table
+    autoTable(doc, {
+      startY: 65,
+      head: [["Name", "Email", "Instagram", "Ride Group", "Bike Rental"]],
+      body: eventSignups.map(signup => [
+        signup.name,
+        signup.email,
+        signup.instagramHandle || "-",
+        signup.rideGroup === "cruising" ? "Cruising" : "Exercise",
+        signup.needsBikeRental ? "Yes" : "No",
+      ]),
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [34, 197, 94] }, // Green color
+    });
+
+    doc.save(`bike-signups-${eventDate.replace(/\s/g, "-")}.pdf`);
+  };
+
+  const printSignups = (eventDate: string, eventSignups: BikeSignup[]) => {
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Bike Ride Signups - ${eventDate}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            h1 { color: #22c55e; }
+            h2 { margin-top: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+            th { background-color: #22c55e; color: white; }
+            tr:nth-child(even) { background-color: #f9fafb; }
+            .stats { margin: 20px 0; }
+            .stats p { margin: 5px 0; }
+            @media print {
+              button { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Keep Pedaling Foundation</h1>
+          <h2>Bike Ride Signups - ${eventDate}</h2>
+          <div class="stats">
+            <p><strong>Total Participants:</strong> ${eventSignups.length}</p>
+            <p><strong>Cruising Group:</strong> ${eventSignups.filter(s => s.rideGroup === "cruising").length}</p>
+            <p><strong>Exercise Group:</strong> ${eventSignups.filter(s => s.rideGroup === "exercise").length}</p>
+            <p><strong>Bike Rentals Needed:</strong> ${eventSignups.filter(s => s.needsBikeRental).length}</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Instagram</th>
+                <th>Ride Group</th>
+                <th>Bike Rental</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${eventSignups.map(signup => `
+                <tr>
+                  <td>${signup.name}</td>
+                  <td>${signup.email}</td>
+                  <td>${signup.instagramHandle || "-"}</td>
+                  <td>${signup.rideGroup === "cruising" ? "Cruising" : "Exercise"}</td>
+                  <td>${signup.needsBikeRental ? "Yes" : "No"}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+          <script>
+            window.onload = function() {
+              window.print();
+            };
+          </script>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+
   if (status === "loading" || loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
@@ -63,7 +194,6 @@ export default function AdminBikeSignupsPage() {
 
   // Group signups by week/event
   const groupedSignups: GroupedSignups = signups.reduce((acc, signup) => {
-    const date = new Date(signup.submittedAt);
     const weekKey = signup.rideDate
       ? new Date(signup.rideDate).toLocaleDateString("en-US", {
           month: "long",
@@ -150,10 +280,46 @@ export default function AdminBikeSignupsPage() {
               .map(([eventDate, eventSignups]) => (
                 <div key={eventDate} className="bg-white rounded-lg shadow overflow-hidden">
                   <div className="bg-green-50 px-6 py-4 border-b border-green-100">
-                    <h3 className="text-lg font-semibold text-gray-900">{eventDate}</h3>
-                    <p className="text-sm text-gray-600">
-                      {eventSignups.length} {eventSignups.length === 1 ? "participant" : "participants"}
-                    </p>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">{eventDate}</h3>
+                        <p className="text-sm text-gray-600">
+                          {eventSignups.length} {eventSignups.length === 1 ? "participant" : "participants"}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => exportToCSV(eventDate, eventSignups)}
+                          className="bg-white text-green-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-50 border border-green-200 transition-colors flex items-center gap-2"
+                          title="Export to CSV"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          CSV
+                        </button>
+                        <button
+                          onClick={() => exportToPDF(eventDate, eventSignups)}
+                          className="bg-white text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-50 border border-red-200 transition-colors flex items-center gap-2"
+                          title="Export to PDF"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                          </svg>
+                          PDF
+                        </button>
+                        <button
+                          onClick={() => printSignups(eventDate, eventSignups)}
+                          className="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 border border-blue-200 transition-colors flex items-center gap-2"
+                          title="Print"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                          </svg>
+                          Print
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="overflow-x-auto">
