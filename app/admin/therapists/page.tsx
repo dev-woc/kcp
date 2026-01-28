@@ -175,6 +175,9 @@ export default function TherapistsPage() {
             <Link href="/admin/bike-signups" className="text-gray-600 hover:text-gray-900">
               Bike Signups
             </Link>
+            <Link href="/admin/rides" className="text-gray-600 hover:text-gray-900">
+              Ride Schedule
+            </Link>
           </div>
           <div className="flex items-center justify-between">
             <div>

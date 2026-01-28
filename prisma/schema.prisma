@@ -190,3 +190,28 @@ model BikeSignup {
   @@index([submittedAt])
   @@index([rideDate])
 }
+
+model Ride {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Ride details
+  rideNumber      Int      // e.g., 91, 92, 93
+  date            DateTime // Date of the ride
+  location        String   // e.g., "Seminole Wekiva Trail"
+  checkInTime     String   // e.g., "8:00 AM"
+  rideTime        String   // e.g., "8:30 AM"
+
+  // Optional details
+  description     String?  // Additional ride description
+  isSpecialEvent  Boolean  @default(false) // Special event marker
+
+  // Status tracking
+  isCompleted     Boolean  @default(false) // Has the ride happened?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([date])
+  @@index([isCompleted])
+  @@unique([rideNumber])
+}

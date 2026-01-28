@@ -239,6 +239,9 @@ export default function AdminBikeSignupsPage() {
             <Link href="/admin/bike-signups" className="text-green-600 font-semibold border-b-2 border-green-600 pb-1">
               Bike Signups
             </Link>
+            <Link href="/admin/rides" className="text-gray-600 hover:text-gray-900">
+              Ride Schedule
+            </Link>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Bike Ride Signups</h2>
           <p className="text-gray-600">Manage weekly Wednesday bike ride registrations</p>

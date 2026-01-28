@@ -109,6 +109,9 @@ export default function AdminPage() {
             <Link href="/admin/bike-signups" className="text-gray-600 hover:text-gray-900">
               Bike Signups
             </Link>
+            <Link href="/admin/rides" className="text-gray-600 hover:text-gray-900">
+              Ride Schedule
+            </Link>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Application Management</h2>
           <p className="text-gray-600">Review and manage therapy program applications</p>
