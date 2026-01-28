@@ -81,6 +81,17 @@ async function getMetrics() {
   };
 }
 
+async function getNextRide() {
+  const nextRide = await prisma.ride.findFirst({
+    where: {
+      isCompleted: false,
+      date: { gte: new Date() },
+    },
+    orderBy: { date: "asc" },
+  });
+  return nextRide;
+}
+
 export default async function HomePage() {
   const session = await getServerSession();
 
@@ -89,6 +100,7 @@ export default async function HomePage() {
   }
 
   const metrics = await getMetrics();
+  const nextRide = await getNextRide();
 
   const application = await prisma.application.findFirst({
     where: { userId: session.user.id },
@@ -378,6 +390,55 @@ export default async function HomePage() {
             amazing community.
           </p>
 
+          {/* Next Ride Info */}
+          {nextRide ? (
+            <div className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-6 border border-green-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-900">Next Ride</h3>
+                {nextRide.isSpecialEvent && (
+                  <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full">
+                    Special Event
+                  </span>
+                )}
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-2xl font-bold text-green-600">
+                    Ride #{nextRide.rideNumber}
+                  </p>
+                  <p className="text-gray-700 font-medium mt-1">{nextRide.location}</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {new Date(nextRide.date).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Check-in: {nextRide.checkInTime} | Ride: {nextRide.rideTime}
+                  </div>
+                </div>
+              </div>
+              {nextRide.description && (
+                <p className="mt-3 text-sm text-gray-600">{nextRide.description}</p>
+              )}
+            </div>
+          ) : (
+            <div className="mb-6 bg-gray-50 rounded-lg p-6 text-center">
+              <p className="text-gray-600">
+                New rides are being scheduled. Check back soon!
+              </p>
+            </div>
+          )}
+
           {/* View Schedule Link */}
           <div className="text-center mb-6">
             <Link
@@ -391,36 +452,13 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* Meeting Location Map */}
-          <div className="mb-6 rounded-lg overflow-hidden shadow-md">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3505.2846754872885!2d-81.36589492347656!3d28.533701975722244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e77a0d6f0c0001%3A0x8f8f8f8f8f8f8f8f!2s825%20McCullough%20Ave%2C%20Orlando%2C%20FL%2032803!5e0!3m2!1sen!2sus!4v1234567890123"
-              width="100%"
-              height="400"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="w-full"
-            />
-            <div className="bg-gray-50 p-4 text-center">
-              <p className="text-sm font-semibold text-gray-900">Meeting Point</p>
-              <p className="text-sm text-gray-600 mt-1">
-                825 McCullough Ave, Orlando FL 32803
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                Parking in Fashion Square Mall Parking lot across from complex
-              </p>
-            </div>
-          </div>
-
           {/* Signup Link */}
           <div className="text-center">
             <Link
               href="/bike-signup"
               className="inline-block bg-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-colors text-lg shadow-md"
             >
-              Sign Up for Next Wednesday's Ride
+              Sign Up for Next Ride
             </Link>
             <p className="text-gray-600 text-sm mt-3">
               Complete our signup form to join the ride
