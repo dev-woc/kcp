@@ -6,7 +6,7 @@ import { Navigation } from "./Navigation";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <header className="sticky top-0 z-50 w-full bg-black border-b border-white/10">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -20,7 +20,7 @@ export function Header() {
                 priority
               />
             </div>
-            <span className="hidden sm:block font-bold text-lg text-secondary">
+            <span className="hidden sm:block font-bold text-lg text-white">
               Keep Pedaling Foundation
             </span>
           </Link>

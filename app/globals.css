@@ -1,73 +1,17 @@
-@import "tailwindcss";
-
-:root {
-  /* Brand Colors - Keep Pedaling Foundation */
-  --color-primary: #a90707;
-  --color-primary-dark: #8a0606;
-  --color-primary-light: #c91010;
-
-  --color-secondary: #32373c;
-  --color-secondary-dark: #1a1d20;
-  --color-secondary-light: #4a5158;
-
-  --color-gray-dark: #444444;
-  --color-gray-medium: #6b7280;
-  --color-gray-light: #9ca3af;
-
-  --color-background: #ffffff;
-  --color-background-alt: #f9fafb;
-  --color-foreground: #171717;
-  --color-foreground-muted: #6b7280;
-
-  --color-off-white: #efefef;
-}
-
-@theme inline {
-  /* Colors */
-  --color-primary: var(--color-primary);
-  --color-primary-dark: var(--color-primary-dark);
-  --color-primary-light: var(--color-primary-light);
-
-  --color-secondary: var(--color-secondary);
-  --color-secondary-dark: var(--color-secondary-dark);
-  --color-secondary-light: var(--color-secondary-light);
-
-  --color-background: var(--color-background);
-  --color-background-alt: var(--color-background-alt);
-  --color-foreground: var(--color-foreground);
-  --color-foreground-muted: var(--color-foreground-muted);
-
-  --color-off-white: var(--color-off-white);
-  --color-gray-dark: var(--color-gray-dark);
-  --color-gray-medium: var(--color-gray-medium);
-  --color-gray-light: var(--color-gray-light);
-
-  /* Fonts */
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #0a0a0a;
-    --color-background-alt: #171717;
-    --color-foreground: #ededed;
-    --color-foreground-muted: #a1a1aa;
-  }
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Base styles */
 body {
-  background: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
+  @apply bg-background text-foreground;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   line-height: 1.6;
 }
 
 /* Focus styles for accessibility */
 *:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  @apply outline-2 outline-primary outline-offset-2;
 }
 
 /* Smooth scrolling */
@@ -77,6 +21,5 @@ html {
 
 /* Selection styles */
 ::selection {
-  background-color: var(--color-primary);
-  color: white;
+  @apply bg-primary text-white;
 }
